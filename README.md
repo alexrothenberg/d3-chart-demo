@@ -1,8 +1,9 @@
-D3 2.10 adds support for optional outer padding with [d3.scale.ordinal](https://github.com/mbostock/d3/wiki/Ordinal-Scales#wiki-ordinal). This parameter allows you to control the outer padding (before the first bar and after the last bar) separately from the inner padding between bars. In this case, the inner padding is 10% and the outer padding is 20%.
+Demo building a bar chart with [D3.js](http://d3js.org/)
 
-```javascript
-var x = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .1, .2);
-```
+There are several tags `step1`, `step2`, `step3`, `step4` & `step5`
+showing tiny increments as you build this sample.
 
-See also this [updated version with an axis title](/mbostock/3885304).
+## References
+
+* [Thinking with Joins](http://bost.ocks.org/mike/join/) - Mike Bostock explains how to think about enter, exit & update to keep your data and dom in sync.
+* [Let’s Make a Bar Chart](http://bost.ocks.org/mike/bar/) - Mike Bostock walks through building a bar chart (much of this repo comes straight from there)
