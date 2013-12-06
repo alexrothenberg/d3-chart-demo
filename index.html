@@ -26,6 +26,12 @@
 </style>
 <body>
 <H1>Frequency of letters in English</H1>
+<select onchange="loadLanguage()" id="language">
+ <option >english</option>
+ <option >french</option>
+ <option >icelandic</option>
+</select>
+
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
@@ -51,25 +57,32 @@
      .attr('transform', 'translate(0, 500)');
   svg.append('g').attr('class', 'y axis')
 
-  d3.tsv('english-frequency.tsv', function(data) {
-    data.forEach(function(d) {
-      d.frequency = + d.frequency
-      return d;
+  var loadLanguage = function() {
+    var language = document.getElementById('language').selectedOptions[0].text
+    d3.tsv(language + '-frequency.tsv', function(data) {
+      data.forEach(function(d) {
+        d.frequency = + d.frequency
+        return d;
+      })
+
+      var letters = data.map(function(d) { return d.letter })
+      var frequencies = data.map(function(d) { return d.frequency })
+      x.domain(letters)
+      y.domain([0, d3.max(frequencies)])
+      var rect = svg.selectAll('.bar').data(data)
+      rect.enter().append('rect');
+      rect.exit().remove();
+      rect.attr('class', 'bar')
+          .attr('width', x.rangeBand())
+          .attr('height', function(d) { return 500 - y(d.frequency)})
+          .attr('x', function(d) { return x(d.letter) })
+          .attr('y', function(d) { return y(d.frequency) })
+
+      d3.select('.x.axis').call(xAxis)
+      d3.select('.y.axis').call(yAxis)
     })
+  }
 
-    var letters = data.map(function(d) { return d.letter })
-    var frequencies = data.map(function(d) { return d.frequency })
-    x.domain(letters)
-    y.domain([0, d3.max(frequencies)])
-    var rect = svg.selectAll('.bar').data(data).enter().append('rect')
-    rect.attr('class', 'bar')
-        .attr('width', x.rangeBand())
-        .attr('height', function(d) { return 500 - y(d.frequency)})
-        .attr('x', function(d) { return x(d.letter) })
-        .attr('y', function(d) { return y(d.frequency) })
-
-    d3.select('.x.axis').call(xAxis)
-    d3.select('.y.axis').call(yAxis)
-  })
+  loadLanguage()
 </script>
 </body>
