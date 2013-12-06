@@ -32,11 +32,24 @@
 
   var x = d3.scale.ordinal().rangeRoundBands([0, 900], .1)
   var y = d3.scale.linear().range([500, 0])
+  var xAxis = d3.svg.axis()
+                .scale(x)
+                .orient('bottom')
+
+  var yAxis = d3.svg.axis()
+                .scale(y)
+                .orient('left')
+                .tickFormat(d3.format('.0%'));
 
   var svg = d3.select('body').append('svg')
-      .attr('height', '500')
+      .attr('height', '550')
       .attr('width', '900')
-    .append('g')
+      .append('g')
+        .attr("transform", "translate(40, 20)");
+  svg.append('g')
+     .attr('class', 'x axis')
+     .attr('transform', 'translate(0, 500)');
+  svg.append('g').attr('class', 'y axis')
 
   d3.tsv('english-frequency.tsv', function(data) {
     data.forEach(function(d) {
@@ -55,7 +68,8 @@
         .attr('x', function(d) { return x(d.letter) })
         .attr('y', function(d) { return y(d.frequency) })
 
-    console.log(data)
+    d3.select('.x.axis').call(xAxis)
+    d3.select('.y.axis').call(yAxis)
   })
 </script>
 </body>
