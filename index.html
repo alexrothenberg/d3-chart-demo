@@ -30,5 +30,24 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
+  var svg = d3.select('body').append('svg')
+      .attr('height', '500')
+      .attr('width', '900')
+    .append('g')
+
+  d3.tsv('english-frequency.tsv', function(data) {
+    data.forEach(function(d) {
+      d.frequency = + d.frequency
+      return d;
+    })
+
+    var rect = svg.selectAll('.bar').data(data).enter().append('rect')
+    rect.attr('class', 'bar')
+        .attr('width', 10)
+        .attr('height', 100)
+        .attr('x', function(d) { return d.letter.charCodeAt(0) })
+
+    console.log(data)
+  })
 </script>
 </body>
